@@ -74,12 +74,7 @@ function clearPage(){
 // }
 
 function showQuestion() {
-    // Сохраняем выбранный ответ перед очисткой страницы
-    let selectedAnswer = null;
-    const checkedRadio = listContainer.querySelector('input[type="radio"]:checked');
-    if (checkedRadio) {
-        selectedAnswer = checkedRadio.value; // Сохраняем значение выбранного radio button
-    }
+
 
     clearPage();
 
@@ -105,22 +100,55 @@ function showQuestion() {
         `;
         answ.append(an);
 
-        // Восстанавливаем выбранный ответ
-        if (selectedAnswer && selectedAnswer == (i + 1)) {
-            an.querySelector('input[type="radio"]').checked = true;
-        }
+    }
+}
+
+function nextQuestion() {
+    const list = document.getElementById('list');
+    const checkedRadio = list.querySelector('input[type="radio"]:checked');
+    
+    if (checkedRadio && checkedRadio.value == questions[questionIndex]['correct'].toString()) {
+        score += 1;
     }
 
-	console.log(checkedRadio);
+    questionIndex += 1;
+
+    if (questionIndex === questions.length) {
+        clearPage();
+        showEnd();
+        return;
+    }
+
+    clearPage();
+    showQuestion();
 }
 
-function nextQuestion(){
-	questionIndex +=1;
-	const list = document.getElementById('list')
-	const checkedRadio = listContainer.querySelector('input[type="radio"]:checked');
-	console.log(checkedRadio);
-	clearPage();
-	showQuestion();
+function showEnd() {
+    let end = document.createElement('h2');
+    end.classList.add('title');
+    end.innerHTML = `Викторина Окончена!`;
+    headerContainer.prepend(end);
+
+    let see = document.createElement('h2');
+    see.innerHTML = `Ваш результат: ${score} правильных ответов из ${questions.length}`;
+    headerContainer.append(see);
+
+    questionIndex = 0; // Сброс индекса вопроса
+
+    submitBtn.innerHTML = `Сыграть заново`;
+    submitBtn.addEventListener('click', again); // Передаем ссылку на функцию
 }
+
+function again() {
+    score = 0; // Сброс счета
+    questionIndex = 0; // Сброс индекса вопроса
+    clearPage(); // Очистка страницы
+    showQuestion(); // Показать первый вопрос
+}
+
+
+ function again(){
+ 	questionIndex
+ }
 
 
