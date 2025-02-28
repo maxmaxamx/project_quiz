@@ -41,10 +41,16 @@ let questionIndex = 0;
 clearPage();
 showQuestion();
 
-function clearPage(){
-	headerContainer.innerHTML = '';
-	listContainer.innerHTML = '';
+function clearPage() {
+    headerContainer.innerHTML = '';
+    listContainer.innerHTML = '';
+    // Удаление элемента с сообщением "Выберите вариант ответа!"
+    let redElement = document.getElementById('red');
+    if (redElement) {
+        redElement.remove();
+    }
 }
+
 
 // function showQuestion(){
 // 	let currentQuest = questions[questionIndex]['question'];
@@ -101,6 +107,8 @@ function showQuestion() {
         answ.append(an);
 
     }
+
+    submitBtn.innerHTML = `Следующий вопрос`;
 }
 
 function nextQuestion() {
@@ -110,8 +118,27 @@ function nextQuestion() {
     if (checkedRadio && checkedRadio.value == questions[questionIndex]['correct'].toString()) {
         score += 1;
     }
+    
+    if(!checkedRadio){
+        let an = document.createElement('h1');
+        let el = document.getElementById('red');
+        if(el) 
+            return;
+        an.setAttribute('id', 'red');
+        an.innerText = "Выберите вариант ответа!";
+        listContainer.append(an);
+        return;
+    } else {
+        let redElement = document.getElementById('red');
+        if (redElement) {
+            redElement.remove();
+        } 
+    }
+
 
     questionIndex += 1;
+    const id = JSON.stringify(questionIndex);
+    window.localStorage.setItem("id",id)
 
     if (questionIndex === questions.length) {
         clearPage();
@@ -133,22 +160,31 @@ function showEnd() {
     see.innerHTML = `Ваш результат: ${score} правильных ответов из ${questions.length}`;
     headerContainer.append(see);
 
-    questionIndex = 0; // Сброс индекса вопроса
+    questionIndex = 0;
+
+    const id = JSON.stringify(questionIndex);
+    window.localStorage.setItem("id",id)
+
 
     submitBtn.innerHTML = `Сыграть заново`;
-    submitBtn.addEventListener('click', again); // Передаем ссылку на функцию
+    submitBtn.removeEventListener('click', nextQuestion);
+    submitBtn.addEventListener('click', again); 
 }
 
 function again() {
-    score = 0; // Сброс счета
-    questionIndex = 0; // Сброс индекса вопроса
-    clearPage(); // Очистка страницы
-    showQuestion(); // Показать первый вопрос
+    score = 0; 
+    questionIndex = 0; 
+    clearPage();
+    showQuestion(); 
+    submitBtn.removeEventListener('click', again);
+    submitBtn.addEventListener('click', nextQuestion);
 }
 
 
- function again(){
- 	questionIndex
- }
-
+if (performance.navigation.type === 1) {
+    console.log('Страница была обновлена');
+    const id = window.localStorage.getItem('id');
+    questionIndex = parseInt(id);
+    showQuestion();
+}
 

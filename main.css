@@ -1,0 +1,57 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,body{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #5d9294;
+    flex-direction: column;
+    color: whitesmoke;
+
+
+    font-family: "Russo One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.container{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #5d9294;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 40px;
+}
+
+.chose{
+    width: 500px;
+    height: 700px;
+    background-color: whitesmoke;
+    border-radius: 15px;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+.chose:hover{
+    cursor: pointer;
+}
+
+.chose img{
+    width: 450px;
+    margin: 25px;
+    border-radius: 15px;
+
+}
+
+  
