@@ -64,11 +64,13 @@ html,body{
 
 .quiz-list label:hover {
 	background-color: seashell;
+	border-radius: 10px;
 }
 
-.quiz-list label.correct {
-	color: rgb(36, 144, 77);
+.correct {
+	background-color: rgb(145, 228, 177);
 	font-weight: bold;
+	border-radius: 10px;
 }
 
 .quiz-list label.disabled {
@@ -140,7 +142,7 @@ html,body{
 	color: #94ca00;
 }
 
-@keyframes shake {
+/* @keyframes shake {
 	10%,
 	90% {
 		transform: translate3d(-1px, 0, 0);
@@ -158,24 +160,66 @@ html,body{
 	60% {
 		transform: translate3d(4px, 0, 0);
 	}
-}
+} */
 
 #red{
 	color: red;
 }
 
-#back{
+#backk{
 	background-color: #43a3e2;
-	color: #fff;
 	border: none;
 	display: block;
 	width: 600px;
 	cursor: pointer;
 	font-size: 1.1rem;
-	font-family: inherit;
-	text-decoration: none;
-	text-align: center;
 	height: 30px;
 	border-radius: 5px;
 	margin-top: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
+#back{
+	font-family: inherit;
+	text-decoration: none;
+	color: #fff;
+	width: 100%;
+	text-align: center;
+}
+
+@media (max-width: 1125px){
+	#backk{
+		width: 360px;
+		height: 50px;
+	}
+}
+
+.ullist{
+	list-style-type: none; 
+  padding: 0;           
+  margin: 0;            
+  width: 100%;  
+}
+
+.lilist{
+	text-decoration: none;
+	font-size: 1.2rem;          
+  	padding: 1rem 0.5rem;      
+  	border-bottom: 1px solid #eee; 
+  	cursor: pointer;             
+  	transition: background-color 0.2s ease; 
+  	color: #333; 
+}
+
+.reddish {
+	background-color: rgba(240, 128, 128, 0.3);
+	color: #8B0000; 
+	border: 1px solid #CD5C5C; 
+}
+
+.greenish {
+	background-color: rgba(144, 238, 144, 0.3); 
+	color: #006400; 
+	border: 1px solid #32CD32; 
+  }
