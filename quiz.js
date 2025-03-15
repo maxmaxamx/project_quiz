@@ -129,132 +129,55 @@ function clearPage() {
     }
 }
 
-// function showQuestion(){
-// 	let currentQuest = questions[questionIndex]['question'];
-// 	let quest = document.createElement('h2');
-// 	quest.classList.add('title');
-// 	quest.innerHTML = `${currentQuest}`;
-// 	headerContainer.prepend(quest);
 
-// 	let currentAnswers = questions[questionIndex]['answers'];
-// 	let answ = document.createElement('ul');
-// 	answ.classList.add('quiz-list');
-// 	answ.setAttribute('id','list')
-// 	headerContainer.append(answ);
-
-
-// 	for(let i = 0; i < 4; i++){
-// 		let an = document.createElement('li');
-// 		an.innerHTML = `
-// 				<label>
-// 					<input type="radio" class="answer" name="answer" />
-// 					<span>${currentAnswers[i]}</span>
-// 				</label>
-// 		`
-// 		answ.append(an);
-// 	}
-	
-// }
 
 function showQuestion() {
     clearPage();
 
-    if(theme == 'art'){
-        if (questionIndex < questions.art.length) {
-            let currentQuest = questions.art[questionIndex]['question'];
-            let quest = document.createElement('h2');
-            quest.classList.add('title');
-            quest.innerHTML = `${currentQuest}`;
-            headerContainer.prepend(quest);
+    let themeQuestions;
+    if (theme === 'art') {
+        themeQuestions = questions.art;
+    } else if (theme === 'programming') {
+        themeQuestions = questions.programming;
+    } else if (theme === 'cinema') {
+        themeQuestions = questions.cinema;
+    }
 
-            let currentAnswers = questions.art[questionIndex]['answers'];
-            let answ = document.createElement('ul');
-            answ.classList.add('quiz-list');
-            answ.setAttribute('id', 'list');
-            headerContainer.append(answ);
+    if (questionIndex < themeQuestions.length) {
+        const currentQuest = themeQuestions[questionIndex].question;
+        const currentAnswers = themeQuestions[questionIndex].answers;
 
-            for (let i = 0; i < currentAnswers.length; i++) {
-                let an = document.createElement('li');
-                an.innerHTML = `
-                    <label>
-                        <input type="radio" class="answer" name="answer" value="${i + 1}" />
-                        <span>${currentAnswers[i]}</span>
-                    </label>
-                `;
-                answ.append(an);
-            }
+        const quest = document.createElement('h2');
+        quest.classList.add('title');
+        quest.innerHTML = `${currentQuest}`;
+        headerContainer.prepend(quest);
 
-            submitBtn.innerHTML = `Следующий вопрос`;
-            submitBtn.addEventListener('click', nextQuestion);
-        } else {
-            clearPage();
-            showEnd();
+        const answ = document.createElement('ul');
+        answ.classList.add('quiz-list');
+        answ.setAttribute('id', 'list');
+        headerContainer.append(answ);
+
+        // Добавляем варианты ответов
+        for (let i = 0; i < currentAnswers.length; i++) {
+            const an = document.createElement('li');
+            an.innerHTML = `
+                <label>
+                    <input type="radio" name="answer" value="${i + 1}" />
+                    ${currentAnswers[i]}
+                </label>
+            `;
+            answ.append(an);
         }
-    }else if(theme == 'programming'){
-        if (questionIndex < questions.programming.length) {
-            let currentQuest = questions.programming[questionIndex]['question'];
-            let quest = document.createElement('h2');
-            quest.classList.add('title');
-            quest.innerHTML = `${currentQuest}`;
-            headerContainer.prepend(quest);
 
-            let currentAnswers = questions.programming[questionIndex]['answers'];
-            let answ = document.createElement('ul');
-            answ.classList.add('quiz-list');
-            answ.setAttribute('id', 'list');
-            headerContainer.append(answ);
-
-            for (let i = 0; i < currentAnswers.length; i++) {
-                let an = document.createElement('li');
-                an.innerHTML = `
-                    <label>
-                        <input type="radio" class="answer" name="answer" value="${i + 1}" />
-                        <span>${currentAnswers[i]}</span>
-                    </label>
-                `;
-                answ.append(an);
-            }
-
-            submitBtn.innerHTML = `Следующий вопрос`;
-            submitBtn.addEventListener('click', nextQuestion);
-        } else {
-            clearPage();
-            showEnd();
-        }
-    }else if(theme == 'cinema'){
-        if (questionIndex < questions.cinema.length) {
-            let currentQuest = questions.cinema[questionIndex]['question'];
-            let quest = document.createElement('h2');
-            quest.classList.add('title');
-            quest.innerHTML = `${currentQuest}`;
-            headerContainer.prepend(quest);
-
-            let currentAnswers = questions.cinema[questionIndex]['answers'];
-            let answ = document.createElement('ul');
-            answ.classList.add('quiz-list');
-            answ.setAttribute('id', 'list');
-            headerContainer.append(answ);
-
-            for (let i = 0; i < currentAnswers.length; i++) {
-                let an = document.createElement('li');
-                an.innerHTML = `
-                    <label>
-                        <input type="radio" class="answer" name="answer" value="${i + 1}" />
-                        <span>${currentAnswers[i]}</span>
-                    </label>
-                `;
-                answ.append(an);
-            }
-
-            submitBtn.innerHTML = `Следующий вопрос`;
-            submitBtn.addEventListener('click', nextQuestion);
-        } else {
-            clearPage();
-            showEnd();
-        }
+        // Настраиваем кнопку "Следующий вопрос"
+        submitBtn.innerHTML = `Показать результаты`;
+        submitBtn.removeEventListener('click', nextQuestion); // Удаляем предыдущий обработчик
+        submitBtn.addEventListener('click', showRes);
+    } else {
+        clearPage();
+        showEnd();
     }
 }
-
 function nextQuestion() {
     const list = document.getElementById('list');
     const checkedRadio = list.querySelector('input[type="radio"]:checked');
@@ -273,21 +196,7 @@ function nextQuestion() {
         }      
     }
 
-    if (!checkedRadio) {
-        let an = document.createElement('h1');
-        let el = document.getElementById('red');
-        if (el)
-            return;
-        an.setAttribute('id', 'red');
-        an.innerText = "Выберите вариант ответа!";
-        listContainer.append(an);
-        return;
-    } else {
-        let redElement = document.getElementById('red');
-        if (redElement) {
-            redElement.remove();
-        }
-    }
+    
 
 
     yourAnswers.push(parseInt(checkedRadio.value));
@@ -366,37 +275,68 @@ function again() {
 }
 
 
-// function showRes() {
-//     const list = document.getElementById('list');
-//     const radioButtons = list.querySelectorAll('input[type="radio"]');
+function showRes() {
+    const list = document.getElementById('list');
+    const radioButtons = list.querySelectorAll('input[type="radio"]');
+    const checkedRadio = list.querySelector('input[type="radio"]:checked');
+
+    let themeQuestions;
+
+    if (theme === 'art') {
+        themeQuestions = questions.art;
+    } else if (theme === 'programming') {
+        themeQuestions = questions.programming;
+    } else if (theme === 'cinema') {
+        themeQuestions = questions.cinema;
+    }
   
-//     let correctAnswerFound = false; 
+    
+
+    if (!checkedRadio) {
+        let an = document.createElement('h1');
+        let el = document.getElementById('red');
+        if (el)
+            return;
+        an.setAttribute('id', 'red');
+        an.innerText = "Выберите вариант ответа!";
+        listContainer.append(an);
+        return;
+    } else {
+        let redElement = document.getElementById('red');
+        if (redElement) {
+            redElement.remove();
+        }
+    }
+
+    let correctAnswerFound = false;
   
-//     for (let i = 0; i < radioButtons.length; i++) {
-//       const radioButton = radioButtons[i];
-//       const label = radioButton.parentNode; 
+    for (let i = 0; i < radioButtons.length; i++) {
+      const radioButton = radioButtons[i];
+      const label = radioButton.parentNode; 
   
-//       if (radioButton.value === questions[questionIndex]['correct'].toString()) {
-//         label.classList.add('correct');
-//         correctAnswerFound = true; 
-//       } else {
-//          label.classList.add('wrong');
-//       }
+      if (radioButton.value === themeQuestions[questionIndex]['correct'].toString()) {
+        label.classList.add('greenish');
+        correctAnswerFound = true; 
+      } else {
+         label.classList.add('reddish');
+      }
   
-//       radioButton.disabled = true; 
+      radioButton.disabled = true; 
   
-//     }
+    }
   
-//       submitBtn.removeEventListener('click', showRes);
-//       submitBtn.innerHTML = `Следующий вопрос`;
-//       submitBtn.addEventListener('click', nextQuestion);
+      submitBtn.removeEventListener('click', showRes);
+      submitBtn.innerHTML = `Следующий вопрос`;
+      submitBtn.addEventListener('click', nextQuestion);
   
   
-//     if (!correctAnswerFound) {
-//       console.error("Правильный ответ не найден!");
-//     }
-//   }
-  
+    if (!correctAnswerFound) {
+      console.error("Правильный ответ не найден!");
+    }
+  }
+
+
+
 
 if (performance.navigation.type === 1) {
     const id = window.localStorage.getItem('id');
