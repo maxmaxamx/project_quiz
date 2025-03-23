@@ -216,6 +216,11 @@ function nextQuestion() {
 }
 
 function showEnd() {
+    clearPage();
+    clearInterval(intervalId);
+    window.addEventListener('beforeunload', () => {
+        localStorage.removeItem('timee'); // Удаляем сохранённое время при закрытии страницы
+    });  
     let end = document.createElement('h2');
     end.classList.add('title');
     end.innerHTML = `Викторина Окончена!`;
@@ -338,14 +343,50 @@ function showRes() {
 
 
 
-if (performance.navigation.type === 1) {
-    const id = window.localStorage.getItem('id');
-    questionIndex = parseInt(id);
-    showQuestion();
-}
-
-addEventListener("popstate",function(e){
-    alert('yeees!');
-},false);
-
+  let minutes = 0; // Минуты
+  let seconds = 30; // Секунды
+  const timerElement = document.getElementById('timer');
+  
+  // Проверяем, есть ли сохранённое время в localStorage
+  const savedTime = localStorage.getItem('timee');
+  if (savedTime) {
+      const [savedMinutes, savedSeconds] = savedTime.split(':').map(Number);
+      minutes = savedMinutes;
+      seconds = savedSeconds;
+  }
+  
+  function updateTimer() {
+      if (seconds === 0 && minutes === 0) {
+          clearInterval(intervalId);
+          TimeOut(); // Вызываем функцию окончания времени
+      } else if (seconds === 0) {
+          minutes--;
+          seconds = 59;
+      } else {
+          seconds--;
+      }
+  
+      // Сохраняем текущее время в localStorage
+      const time = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      localStorage.setItem('timee', time);
+  
+      // Обновляем отображение таймера на странице
+      timerElement.textContent = time;
+  }
+  
+  // Запускаем таймер
+  const intervalId = setInterval(updateTimer, 1000);
+  
+  // Функция для обработки окончания времени
+  function TimeOut() {
+      clearPage();
+      listContainer.innerHTML = `
+          <h1 class="red">ВРЕМЯ ВЫШЛО</h1>
+      `;
+      submitBtn.innerText = 'show'
+      submitBtn.removeEventListener('click', nextQuestion); // Удаляем обработчик
+      submitBtn.addEventListener('click', showEnd);
+  }
+  
+  // Очистка состояния таймера при завершении или перезагрузке игры
   
