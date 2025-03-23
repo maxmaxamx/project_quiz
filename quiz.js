@@ -366,8 +366,8 @@ function showRes() {
       }
   
       // Сохраняем текущее время в localStorage
-      /*const time = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-      localStorage.setItem('timee', time);*/
+      const time = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      /*localStorage.setItem('timee', time);*/
   
       timerElement.textContent = time;
   }
